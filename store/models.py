@@ -8,6 +8,8 @@ class Category(models.Model):
     
     def __str__(self):
         return self.name
+    
+
 
 # Customers
 class Customer(models.Model):
