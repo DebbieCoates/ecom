@@ -1,3 +1,4 @@
+from urllib import response
 from django.shortcuts import render, get_object_or_404, redirect    
 from .cart import Cart
 from  store.models import Product
@@ -27,8 +28,16 @@ def cart_add(request):
         return response
 
 
-def cart_delete(request, product_id):
-    return render(request, 'cart_delete.html', {})
+def cart_delete(request):
+	cart = Cart(request)
+	if request.POST.get('action') == 'post':
+		# Get stuff
+		product_id = int(request.POST.get('product_id'))
+		# Call delete Function in Cart
+		cart.delete(product=product_id)
+
+		response = JsonResponse({'product':product_id})
+		return response
 
 def cart_update(request):
 	cart = Cart(request)
