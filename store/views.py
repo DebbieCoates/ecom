@@ -9,12 +9,6 @@ from django import forms
 from .forms import SignUpForm
 
 
-
-
-
-
-
-
 def category_summary(request):
     categories = Category.objects.all()
 
