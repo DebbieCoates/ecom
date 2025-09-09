@@ -17,12 +17,6 @@
                             <h5 class="card-title">{{ product.name }}</h5>
                             <p class="card-text justify">{{ product.description }}</p>
 
-                            {% comment %} {% if product.is_sale %}
-                                <p class="card-text"> <strike> £{{ product.price }} </strike>  &nbsp;  <strong> £{{ product.sale_price }} </strong> </p>
-                            {% else %}
-                                <p class="card-text"> <strong> £{{ product.price }} </strong> </p>
-                            {% endif %} {% endcomment %}
-
                             {% if product.is_sale %}
                                 <div class="d-flex justify-content-center small text-danger  mb-2">
                                     <div class="bi-star-fill"></div>
