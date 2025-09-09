@@ -14,25 +14,37 @@
                 <div class="col-md-8">
                     <div class="card-body">
                         <center>    
+                            <!-- Product Information -->                            
                             <h5 class="card-title">{{ product.name }}</h5>
                             <p class="card-text justify">{{ product.description }}</p>
-
+                            
+                            <!-- Price -->
                             {% if product.is_sale %}
                                 <div class="d-flex justify-content-center small text-danger  mb-2">
                                     <div class="bi-star-fill"></div>
                                     &nbsp;&nbsp;<div >SALE</div> &nbsp;&nbsp;
                                     <div class="bi-star-fill"></div>
                                 </div>  
-
-                                <strike>
-                                    £{{ product.sale_price }} 
-                                </strike>
-                                &nbsp; £{{ product.price }}
-                                
+                                <strike>£{{ product.sale_price }} </strike>&nbsp; £{{ product.price }}
                             {% else %}
                             £{{ product.price }}
                             {% endif %}
                             <br/> <br/>
+                            <!-- Quantity -->
+                            <div class="row justify-content-center">
+                                <div class="col-md-2">Quantity:</div>
+                                <div class="col-md-2">
+                                    <select class="form-select form-select-sm" id="qty-cart">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <br/><br/>
                             <a href="{% url 'home' %}" class="btn btn-secondary"> Home</a>
                             <button type="button" value="{{ product.id }}" class="btn btn-secondary" id="add-cart">Add To Cart</button>
                         </center>
