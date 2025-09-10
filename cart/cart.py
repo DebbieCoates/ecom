@@ -19,15 +19,36 @@ class Cart:
         #make sure cart is available on all pages
         self.cart = cart
 
-
-    def add(self, product, quantity):
-        product_id = str(product.id)
+    def db_add(self, product, quantity):
+        product_id = str(product)
         product_qty = str(quantity)
-		# Logic
+        # Logic
         if product_id in self.cart:
             pass
         else:
-			#self.cart[product_id] = {'price': str(product.price)}
+            #self.cart[product_id] = {'price': str(product.price)}
+            self.cart[product_id] = int(product_qty)
+
+        self.session.modified = True
+
+        # Deal with logged in user
+        if self.request.user.is_authenticated:
+            # Get the current user profile
+            current_user = Profile.objects.filter(user__id=self.request.user.id)
+            # Convert {'3':1, '2':4} to {"3":1, "2":4}
+            carty = str(self.cart)
+            carty = carty.replace("\'", "\"")
+            # Save carty to the Profile Model
+            current_user.update(old_cart=str(carty))
+            
+    def add(self, product, quantity):
+        product_id = str(product.id)
+        product_qty = str(quantity)
+        # Logic
+        if product_id in self.cart:
+            pass
+        else:
+            #self.cart[product_id] = {'price': str(product.price)}
             self.cart[product_id] = int(product_qty)
 
         self.session.modified = True
@@ -39,21 +60,19 @@ class Cart:
             carty = str(self.cart)
             carty = carty.replace("\'", "\"")
             current_user.update(old_cart = str(carty))
-
-            
             
     def cart_total(self):
-		# Get product IDS
+        # Get product IDS
         product_ids = self.cart.keys()
-		# lookup those keys in our products database model
+        # lookup those keys in our products database model
         products = Product.objects.filter(id__in=product_ids)
-		# Get quantities
+        # Get quantities
         quantities = self.cart
-		# Start counting at 0
+        # Start counting at 0
         total = 0
-		
+        
         for key, value in quantities.items():
-			# Convert key string into into so we can do math
+            # Convert key string into into so we can do math
             key = int(key)
             for product in products:
                 if product.id == key:
@@ -62,7 +81,7 @@ class Cart:
                     else:
                         total = total + (product.price * value)
 
-            return total
+        return total
 
     def __len__(self):
         return len(self.cart)
@@ -89,6 +108,16 @@ class Cart:
         #save to session    
         self.session.modified = True
         
+                # Deal with logged in user
+        if self.request.user.is_authenticated:
+            # Get the current user profile
+            current_user = Profile.objects.filter(user__id=self.request.user.id)
+            # Convert {'3':1, '2':4} to {"3":1, "2":4}
+            carty = str(self.cart)
+            carty = carty.replace("\'", "\"")
+            # Save carty to the Profile Model
+            current_user.update(old_cart=str(carty))
+        
         thing = self.cart
         return thing
     
@@ -98,3 +127,13 @@ class Cart:
         if product_id in self.cart:
             del self.cart[product_id]
         self.session.modified = True
+        
+        # Deal with logged in user
+        if self.request.user.is_authenticated:
+            # Get the current user profile
+            current_user = Profile.objects.filter(user__id=self.request.user.id)
+            # Convert {'3':1, '2':4} to {"3":1, "2":4}
+            carty = str(self.cart)
+            carty = carty.replace("\'", "\"")
+            # Save carty to the Profile Model
+            current_user.update(old_cart=str(carty))
