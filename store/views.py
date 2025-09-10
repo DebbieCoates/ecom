@@ -6,6 +6,10 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm  
 from django import forms 
+
+from payment.forms import ShippingAddressForm
+from payment.models import shippingAddress
+
 from .forms import SignUpForm, UpdateUsrForm, ChangePasswordForm, UserInfoForm
 from django.db.models import Q
 import json
@@ -26,17 +30,22 @@ def search(request):
     else:
         return render(request, 'search.html', {})
 
-
-
 def update_info(request):
     if request.user.is_authenticated:
+        #get current user
         current_user = Profile.objects.get(user__id=request.user.id)
+        #gt current user shipping address
+        shipping_user = shippingAddress.objects.get(user__id=request.user.id)
+        # Get their saved cart from database
         form = UserInfoForm(request.POST or None, instance=current_user)
-        if form.is_valid():
+        #get user shipping info
+        shipping_form = ShippingAddressForm(request.POST or None, instance=shipping_user)
+        if form.is_valid() or shipping_form.is_valid():
             form.save()
+            shipping_form.save()
             messages.success(request, "Your information has been updated successfully!")
             return redirect('home')
-        return render(request, 'update_info.html', {'form': form})
+        return render(request, 'update_info.html', {'form': form, 'ShippingAddressForm': shipping_form })
     else:
         messages.success(request, "You must be logged in to access that page!")
         return redirect('home')
@@ -76,7 +85,6 @@ def update_user(request):
     else:
         messages.success(request, "You must be logged in to access that page!")
         return redirect('home')
-
 
 def category_summary(request):
     categories = Category.objects.all()
