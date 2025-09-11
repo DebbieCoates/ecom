@@ -46,11 +46,23 @@
                             {% endfor %}
 
                             Total: £{{ totals }} <br/><br/>
-
-
+                            <a href="{% url 'cart_summary' %}" class = "btn btn-outline-secondary">Modify Cart</a>
+                            <br/>
                         </div>
                     </div>
                     <br/><br/>
+                    <!-- Shipping -->
+                    <div class="card">
+                        <div class="card-header">
+                            Shipping Information
+                        </div>
+                        <div class="card-body">
+                            {{ shipping_form.as_p }}
+                        </div>
+                    </div>
+                    <br/><br/>
+                    <!-- Proceed to Payment Button -->
+                    <a href="#" class = "btn btn-secondary ">Proceed to Payment</a>
                 </div>
             </div>
         </div>
