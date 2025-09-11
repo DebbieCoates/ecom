@@ -87,9 +87,17 @@
                     </div>
                 <br/>
                 {% endfor %}
-
+                <!-- Cart Total -->
+                <div align="right">    
                 <h3>Total: £{{ totals }}</h3>
+                <br/>
+                 <!-- Proceed to Checkout Button -->                      
+                <a href="{% url 'checkout' %}" class="btn btn-success btn-lg">Proceed to Checkout</a>
                 <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
+
+                </div>
+
+
             <!-- if there are NO cart items, do this -->
             {% else %}
                 <div >
