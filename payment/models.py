@@ -42,6 +42,7 @@ class Order(models.Model):
     shipping_address = models.TextField(max_length=15000)
     amount_paid = models.DecimalField(max_digits=10, decimal_places=2)  # New field to store the amount paid
     date_ordered = models.DateTimeField(auto_now_add=True)
+    shipped = models.BooleanField(default=False)
 
 def __str__(self):
     if self.user:

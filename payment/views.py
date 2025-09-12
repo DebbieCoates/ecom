@@ -53,6 +53,11 @@ def process_order(request):
 						# Create order item
 						create_order_item = OrderItem(order_id=order_id, product_id=product_id, user=user, quantity=value, price=price)
 						create_order_item.save()
+      
+      
+			for key in list(request.session.keys()):
+				if key == 'session_key':
+					del request.session[key]
 
 			messages.success(request, 'Order Placed.')
 			return redirect('home')
@@ -81,6 +86,10 @@ def process_order(request):
 						create_order_item = OrderItem(order_id=order_id, product_id=product_id,  quantity=value, price=price)
 						create_order_item.save()
 
+			for key in list(request.session.keys()):
+				if key == 'session_key':
+					del request.session[key]
+      
 			messages.success(request, 'Order Placed.')
 			return redirect('home')
 
