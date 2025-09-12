@@ -8,8 +8,8 @@
         <header class="bg-dark py-5">
             <div class="container px-4 px-lg-5 my-5">
                 <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">Checkout</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">Review your order and proceed to payment.</p>
+                    <h1 class="display-4 fw-bolder">Billing Info</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">enter your payment infor</p>
                 </div>
             </div>
         </header>
@@ -54,20 +54,39 @@
                     <!-- Shipping -->
                     <div class="card">
                         <div class="card-header">
-                            Shipping Information
+                            Shipping Info
                         </div>
                         <div class="card-body">
-                            <form method="post" action="{% url 'billing_info' %}">
-                                {% csrf_token %}
-                                {{ shipping_form.as_p }}
-                                <button type="submit" class="btn btn-primary">Save Shipping Information</button>
+                            Name : {{ shipping_info.shipping_fullname }} <br/>
+                            Email : {{ shipping_info.shipping_email }} <br/>
+                            Address1: {{ shipping_info.shipping_address1 }} <br/>
+                            Address2 : {{ shipping_info.shipping_address2 }} <br/>
+                            City : {{ shipping_info.shipping_city }} <br/>
+                            Postcode: {{ shipping_info.shipping_postcode }} <br/>
+                            County : {{ shipping_info.shipping_county }} <br/>
+                            Country : {{ shipping_info.shipping_country }} <br/>
+                            <br/>
+                            <a href="{% url 'checkout' %}"  class="btn btn-outline-secondary">Update Shipping </a>
                         </div>
-                    </div>
+                    </div> <!--End Shipping -->
                     <br/>
+
+                    <!-- Billing -->
+                    <br/>
+                    <div class="card">
+                        <div class="card-header">
+                            Billing Info
+                        </div>
+                        <div class="card-body">
+                            {{billing_form.as_p}}
+                        </div>
+                    </div> <!--End Billing -->
+
+
                     <!-- Proceed to Payment Button -->
-                    <button type="submit" class="btn btn-secondary">Continue to Billing</button>
-                </form>
-                      <br/><br/>
+                    <br/>
+                    <a href="#" class = "btn btn-secondary ">Pay Now</a>
+                    <br/><br/>
                 </div>
             </div>
         </div>
