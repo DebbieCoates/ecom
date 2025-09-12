@@ -7,7 +7,16 @@ from django.contrib import messages
 from payment.models import Order, OrderItem
 from django.contrib.auth.models import User
 
-
+def orders(request, id):
+	if request.user.is_authenticated and request.user.is_superuser:
+		# Get the order
+		order = Order.objects.get(id=id)
+		# Get the order items
+		items = OrderItem.objects.filter(order_id=id)
+		return render(request, "payment/orders.html", {'order': order, 'items': items})
+	else:
+		messages.success(request, 'Order Placed.')
+		return redirect('home')
 
 #  not_shipped_dashnot shipped dashboard
 def not_shipped_dash(request):
