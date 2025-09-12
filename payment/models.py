@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from  store.models import Product
+from django.db.models.signals import post_save
 
 # Create your models here.
 class shippingAddress(models.Model):
@@ -19,7 +20,17 @@ class shippingAddress(models.Model):
         verbose_name_plural = 'Shipping Address'
         
     def __str__(self):
-        return f'Shipping Address for {str(self.id)} - {self.shipping_fullname}'
+        return f'Shipping Address for ID : {str(self.id)} - {self.shipping_fullname}'
+
+# Create a shipping address by default when a user signs up
+def create_shipping(sender, instance, created, **kwargs):
+    if created:
+        user_shipping = shippingAddress(user=instance)
+        user_shipping.save()
+
+# Automate the profile creation
+post_save.connect(create_shipping, sender=User)
+
 
 
 #Create Order Model
