@@ -33,6 +33,26 @@ def process_order(request):
 			user = request.user
 			create_order = Order.objects.create(user=user, full_name=full_name, email=email, shipping_address=shipping_address, amount_paid=amount_paid)
 			create_order.save()
+   
+  			# Get the order ID
+			order_id = create_order.pk
+			
+			# Get product Info
+			for product in cart_products():
+				# Get product ID
+				product_id = product.id
+				# Get product price
+				if product.is_sale:
+					price = product.sale_price
+				else:
+					price = product.price
+
+				# Get quantity
+				for key,value in quantities().items():
+					if int(key) == product.id:
+						# Create order item
+						create_order_item = OrderItem(order_id=order_id, product_id=product_id, user=user, quantity=value, price=price)
+						create_order_item.save()
 
 			messages.success(request, 'Order Placed.')
 			return redirect('home')
@@ -40,6 +60,26 @@ def process_order(request):
 			# user is not logged in
 			create_order = Order.objects.create(full_name=full_name, email=email, shipping_address=shipping_address, amount_paid=amount_paid)
 			create_order.save()
+   
+     			# Get the order ID
+			order_id = create_order.pk
+			
+			# Get product Info
+			for product in cart_products():
+				# Get product ID
+				product_id = product.id
+				# Get product price
+				if product.is_sale:
+					price = product.sale_price
+				else:
+					price = product.price
+
+				# Get quantity
+				for key,value in quantities().items():
+					if int(key) == product.id:
+						# Create order item
+						create_order_item = OrderItem(order_id=order_id, product_id=product_id,  quantity=value, price=price)
+						create_order_item.save()
 
 			messages.success(request, 'Order Placed.')
 			return redirect('home')
