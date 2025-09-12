@@ -43,8 +43,10 @@ class Order(models.Model):
     amount_paid = models.DecimalField(max_digits=10, decimal_places=2)  # New field to store the amount paid
     date_ordered = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return f'Order - {self.id} by {self.user.username}'
+def __str__(self):
+    if self.user:
+        return f"Order by {self.user.username}"
+    return "Order by guest"
     
 # Create OrderItem Model
 class OrderItem(models.Model):
