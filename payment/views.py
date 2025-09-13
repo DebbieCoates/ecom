@@ -7,7 +7,11 @@ from django.contrib import messages
 from payment.models import Order, OrderItem
 from django.contrib.auth.models import User
 import datetime
+from store.models import Product, Profile
 
+
+
+# Create your views here.
 def orders(request, id):
 	if request.user.is_authenticated and request.user.is_superuser:
 		# Get the order
@@ -131,11 +135,17 @@ def process_order(request):
 						# Create order item
 						create_order_item = OrderItem(order_id=order_id, product_id=product_id, user=user, quantity=value, price=price)
 						create_order_item.save()
-      
-      
+
+			# Delete our cart
 			for key in list(request.session.keys()):
-				if key == 'session_key':
+				if key == "session_key":
+					# Delete the key
 					del request.session[key]
+
+			# Delete Cart from Database (old_cart field)
+			current_user = Profile.objects.filter(user__id=request.user.id)
+			# Delete shopping cart in database (old_cart field)
+			current_user.update(old_cart="")
 
 			messages.success(request, 'Order Placed.')
 			return redirect('home')
